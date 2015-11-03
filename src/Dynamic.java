@@ -3,10 +3,40 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class Dynamic {
-	public static void main(String[] args) {
-		ArrayList<Integer> dataArr = createDataArray();
-		ArrayList<Integer> procArr = createProcessingArray(dataArr.size());
+	final static ArrayList<ArrayList<Integer>> exampleData = new ArrayList<ArrayList<Integer>>();
+	final static ArrayList<ArrayList<Integer>> exampleProc = new ArrayList<ArrayList<Integer>>();
+	
+	static {
+		ArrayList<Integer> tmp = new ArrayList<Integer>();
+		Integer[] vals = {1, 2, 3, 4, 5};
+		tmp.addAll(Arrays.asList(vals));
+		exampleData.add(tmp);
 		
+		tmp = new ArrayList<Integer>();
+		Integer[] vals2 = {8, 6, 5, 2, 1};
+		tmp.addAll(Arrays.asList(vals2));
+		exampleProc.add(tmp);
+	}
+	
+	public static void main(String[] args) {
+		ArrayList<Integer> dataArr;
+		ArrayList<Integer> procArr;
+		
+		if (args.length > 0) {
+			dataArr = exampleData.get(Integer.valueOf(args[0]));
+			procArr = exampleProc.get(Integer.valueOf(args[0]));
+		} else {
+			dataArr = createDataArray();
+			procArr = createProcessingArray(dataArr.size());
+		}
+		
+		ArrayList<Integer> tree = new ArrayList<Integer>();
+		
+		//Add top node
+		tree.add(0);
+		for (int i = 0; i < dataArr.size(); i++) {
+			
+		}
 		
 	}
 	
