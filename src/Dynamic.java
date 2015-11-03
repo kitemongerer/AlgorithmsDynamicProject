@@ -32,12 +32,12 @@ public class Dynamic {
 			procArr = createProcessingArray(dataArr.size());
 		}
 		
-		Integer[] vals = {1, 2};		
+		Integer[] vals = {1, 2, 3, 4, 5};		
 		Integer[] vals2 = {8, 6, 5, 2, 1};
 		
 		List<Integer> tree = createSolution(Arrays.asList(vals), Arrays.asList(vals2));
 		
-		for(Integer value : tree)
+		for(Integer value : getPath(tree))
 			System.out.printf("%d\r\n", value);
 		
 	}
@@ -115,6 +115,41 @@ public class Dynamic {
 		
 		return Arrays.asList(working_tree);
 	}
-}
+
+
+	static int findSolution(List<Integer> working_tree)
+	{
+		int index_value = working_tree.get(1);
+		int largest_index = 1;
+		
+		for(int index = working_tree.size()/2;index < working_tree.size(); ++index)
+			if(working_tree.get(index) >= index_value)
+			{
+				largest_index = index;
+				index_value = working_tree.get(index);
+			}
+		return largest_index;
+	}
 	
+	static List<Integer> getPath(List<Integer> working_tree)
+	{
+		List<Integer> solution = new ArrayList<Integer>();
+		int node = findSolution(working_tree);
+		solution.add(node);
+		
+		while((node = getParent(node)) > 0)
+			solution.add(node);
+		return solution;
+	}
+	
+	static int getParent(int child)
+	{
+		return (child-1)/2;
+	}
+}
+
+
+
+
+
 	
