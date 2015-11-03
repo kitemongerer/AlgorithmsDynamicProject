@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class Dynamic {
@@ -77,6 +78,25 @@ public class Dynamic {
 		return procArr;
 	}
 	
+	
+	private static List<Integer> createSolution(List available, List proc)
+	{
+		int days = available.size();
+		int num_leafs = ((Double)Math.pow((double)days, 2.)).intValue();
+		int num_nodes = 1;
+		for(int i = 0; i< days; ++i)
+			num_nodes += num_nodes*2 +1;
+		
+		List<Integer> solution = new ArrayList<Integer>(num_leafs);
+		List<Integer> working_tree = new ArrayList<Integer>(num_nodes);
+		List<Integer> wt_proc =  new ArrayList<Integer>(num_nodes);
+		working_tree.set(0, 0);
+		wt_proc.set(0, -1);
+		
+		
+		
+		return solution;
+	}
 }
 	
 	
