@@ -79,23 +79,37 @@ public class Dynamic {
 	}
 	
 	
-	private static List<Integer> createSolution(List available, List proc)
+	private static List<Integer> createSolution(List<Integer> available, List<Integer> proc)
 	{
 		int days = available.size();
-		int num_leafs = ((Double)Math.pow((double)days, 2.)).intValue();
-		int num_nodes = 1;
-		for(int i = 0; i< days; ++i)
-			num_nodes += num_nodes*2 +1;
+		int num_leafs = ((Double)Math.pow(2.,(double)days)).intValue();
+		int num_nodes = (2*num_leafs)-1;
 		
-		List<Integer> solution = new ArrayList<Integer>(num_leafs);
 		List<Integer> working_tree = new ArrayList<Integer>(num_nodes);
 		List<Integer> wt_proc =  new ArrayList<Integer>(num_nodes);
 		working_tree.set(0, 0);
 		wt_proc.set(0, -1);
 		
+		for(int i = 1; i < num_nodes; i++)
+		{
+			int parent = (i-1)/2;
+			if(i%2 == 0)
+			{
+				int np_ctr = wt_proc.get(parent);
+				if(np_ctr + 1 < proc.size())
+					++np_ctr;
+				
+				working_tree.set(i, available.get(i) % proc.get(np_ctr) + working_tree.get(parent));
+				wt_proc.set(i, np_ctr);
+				continue;
+			}
+			
+			working_tree.set(i,working_tree.get(parent));
+			wt_proc.set(i, -1);
+			
+		}
 		
-		
-		return solution;
+		return working_tree;
 	}
 }
 	
