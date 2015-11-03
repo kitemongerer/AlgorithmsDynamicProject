@@ -35,9 +35,15 @@ public class Dynamic {
 		//Add top node
 		tree.add(0);
 		for (int i = 0; i < dataArr.size(); i++) {
-			
+			for (int j = 0; j < Math.pow(i, 2); j++) {
+				//tree.add(tree.get(parent(j)) + 0);
+			}
 		}
 		
+	}
+	
+	private static int parent(int index) {
+		return (index - 1) / 2;
 	}
 	
 	private static ArrayList<Integer> createDataArray() {
