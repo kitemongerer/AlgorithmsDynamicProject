@@ -7,6 +7,7 @@ public class Dynamic {
 	final static ArrayList<ArrayList<Integer>> exampleData = new ArrayList<ArrayList<Integer>>();
 	final static ArrayList<ArrayList<Integer>> exampleProc = new ArrayList<ArrayList<Integer>>();
 	
+	
 	static {
 		ArrayList<Integer> tmp = new ArrayList<Integer>();
 		Integer[] vals = {1, 2, 3, 4, 5};
@@ -31,15 +32,13 @@ public class Dynamic {
 			procArr = createProcessingArray(dataArr.size());
 		}
 		
-		ArrayList<Integer> tree = new ArrayList<Integer>();
+		Integer[] vals = {1, 2};		
+		Integer[] vals2 = {8, 6, 5, 2, 1};
 		
-		//Add top node
-		tree.add(0);
-		for (int i = 0; i < dataArr.size(); i++) {
-			for (int j = 0; j < Math.pow(i, 2); j++) {
-				//tree.add(tree.get(parent(j)) + 0);
-			}
-		}
+		List<Integer> tree = createSolution(Arrays.asList(vals), Arrays.asList(vals2));
+		
+		for(Integer value : tree)
+			System.out.printf("%d\r\n", value);
 		
 	}
 	
@@ -85,31 +84,36 @@ public class Dynamic {
 		int num_leafs = ((Double)Math.pow(2.,(double)days)).intValue();
 		int num_nodes = (2*num_leafs)-1;
 		
-		List<Integer> working_tree = new ArrayList<Integer>(num_nodes);
-		List<Integer> wt_proc =  new ArrayList<Integer>(num_nodes);
-		working_tree.set(0, 0);
-		wt_proc.set(0, -1);
+		Integer[] working_tree = new Integer[num_nodes];
+		int[] wt_proc =  new int[num_nodes];
+		
+		working_tree[0] = 0;
+		wt_proc[0]=-1;
 		
 		for(int i = 1; i < num_nodes; i++)
 		{
 			int parent = (i-1)/2;
+			int cur_day = ((Double)Math.floor(Math.log(i)/Math.log(2))).intValue()-1;
 			if(i%2 == 0)
 			{
-				int np_ctr = wt_proc.get(parent);
+				int np_ctr = wt_proc[parent];
 				if(np_ctr + 1 < proc.size())
 					++np_ctr;
+				System.out.printf("Index: %d\t%d\r\n",i,cur_day);
 				
-				working_tree.set(i, available.get(i) % proc.get(np_ctr) + working_tree.get(parent));
-				wt_proc.set(i, np_ctr);
+				working_tree[i]= available.get(cur_day)
+						% proc.get(np_ctr)
+						+ working_tree[parent];
+				wt_proc[i]= np_ctr;
 				continue;
 			}
 			
-			working_tree.set(i,working_tree.get(parent));
-			wt_proc.set(i, -1);
+			working_tree[i]=working_tree[parent];
+			wt_proc[i]= -1;
 			
 		}
 		
-		return working_tree;
+		return Arrays.asList(working_tree);
 	}
 }
 	
