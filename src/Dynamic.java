@@ -32,13 +32,22 @@ public class Dynamic {
 			procArr = createProcessingArray(dataArr.size());
 		}
 		
-		Integer[] vals = {1, 2, 3, 4, 5};		
-		Integer[] vals2 = {8, 6, 5, 2, 1};
+		//Integer[] vals = {1, 2, 3, 4, 5};		
+		//Integer[] vals2 = {8, 6, 5, 2, 1};
+		Integer[] vals = {10, 1, 7, 7};		
+		Integer[] vals2 = {8, 4, 2, 1};
 		
 		List<Integer> tree = createSolution(Arrays.asList(vals), Arrays.asList(vals2));
 		
-		for(Integer value : getPath(tree))
-			System.out.printf("%d\r\n", value);
+		System.out.print("Solution: ");
+		for(Integer value : getPath(tree)) {
+			if (value == 0) {
+				System.out.printf("Reboot, ");
+			} else {
+				System.out.printf("Process, ");
+			}
+		}
+			
 		
 	}
 	
@@ -82,34 +91,34 @@ public class Dynamic {
 	{
 		int days = available.size();
 		int num_leafs = ((Double)Math.pow(2.,(double)days)).intValue();
-		int num_nodes = (2*num_leafs)-1;
+		int num_nodes = (2 * num_leafs) - 1;
 		
 		Integer[] working_tree = new Integer[num_nodes];
 		int[] wt_proc =  new int[num_nodes];
 		
 		working_tree[0] = 0;
-		wt_proc[0]=-1;
+		wt_proc[0] = -1;
 		
 		for(int i = 1; i < num_nodes; i++)
 		{
-			int parent = (i-1)/2;
-			int cur_day = ((Double)Math.floor(Math.log(i)/Math.log(2))).intValue()-1;
-			if(i%2 == 0)
+			int parent = (i-1) / 2;
+			int cur_day = ((Double)Math.floor(Math.log(i) / Math.log(2))).intValue() - 1;
+			if(i % 2 == 0)
 			{
 				int np_ctr = wt_proc[parent];
 				if(np_ctr + 1 < proc.size())
 					++np_ctr;
-				System.out.printf("Index: %d\t%d\r\n",i,cur_day);
 				
-				working_tree[i]= available.get(cur_day)
-						% proc.get(np_ctr)
+				
+				working_tree[i]= Math.min(available.get(cur_day),
+						proc.get(np_ctr))
 						+ working_tree[parent];
-				wt_proc[i]= np_ctr;
-				continue;
+				System.out.printf("Index: %d\t%d\t%d\t%d\r\n", i, cur_day, working_tree[i], proc.get(np_ctr));
+				wt_proc[i] = np_ctr;
+			} else {
+				working_tree[i] = working_tree[parent];
+				wt_proc[i] = -1;
 			}
-			
-			working_tree[i]=working_tree[parent];
-			wt_proc[i]= -1;
 			
 		}
 		
@@ -122,7 +131,7 @@ public class Dynamic {
 		int index_value = working_tree.get(1);
 		int largest_index = 1;
 		
-		for(int index = working_tree.size()/2;index < working_tree.size(); ++index)
+		for(int index = working_tree.size() / 2; index < working_tree.size(); ++index)
 			if(working_tree.get(index) >= index_value)
 			{
 				largest_index = index;
@@ -135,16 +144,22 @@ public class Dynamic {
 	{
 		List<Integer> solution = new ArrayList<Integer>();
 		int node = findSolution(working_tree);
-		solution.add(node);
+		//solution.add(node);
 		
-		while((node = getParent(node)) > 0)
-			solution.add(node);
+		while(node > 0) {
+			if (node % 2 == 0) {
+				solution.add(1);
+			} else {
+				solution.add(0);
+			}
+			node = getParent(node);
+		}
 		return solution;
 	}
 	
 	static int getParent(int child)
 	{
-		return (child-1)/2;
+		return (child - 1) / 2;
 	}
 }
 
